@@ -1,0 +1,34 @@
+{
+    "name": "",
+    "username": "",
+    "password": "",
+    "gender": "",
+    "email": "",
+    "personal_info": {
+                        "birthday": "",
+                        "location": ""
+    },
+
+    "profile_picture": "",
+    "groups": [],
+    "hobbies": [],
+    "activities": {
+                    "Upcoming_activities": [],
+                    "past_activities": [],
+                    "missed_event": []
+    },
+
+    "friend_list": {
+
+                    "connections": [],
+                    "blocked_users": [],
+                    "pending_requests": []
+    },
+    "subscription": "",
+    "about_user": "",
+    "Active": "True"
+}
+
+    
+
+

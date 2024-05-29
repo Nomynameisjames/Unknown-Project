@@ -2,6 +2,7 @@
 import os
 from dotenv import load_dotenv
 from typing import Union, Dict, List
+from bson import ObjectId
 from pymongo.server_api import ServerApi
 from pymongo import MongoClient
 
@@ -43,16 +44,16 @@ class mongo_driver:
         """
         try:
             if isinstance(dataset, dict):
-                user_file = self.__db.insert_one(dataset)
+                user_file = self.__db.insert_one(dataset).inserted_id
             elif isinstance(dataset, list):
-                user_file = self.__db.insert_many(dataset)
+                user_file = self.__db.insert_many(dataset).inserted_ids
             else:
                 return f"file type must either be a dict or list"
-            return f"File saved {user_file}"
+            return f"File saved user_ID is {user_file}"
         except Exception as e:
             return f" some error occured while saving data {e}"
 
-    def search(self, name: str) -> Union[List, str]:
+    def search(self, param: str, prefix) -> Union[List, str]:
         """
             Another collection obj method utilised is the find() this take a dict
             as an arg, any key could be used to access the specific data being 
@@ -61,11 +62,16 @@ class mongo_driver:
             Notable if an empty dict is passed as an arg in the find({}) method,
             it returns all te data within that collection.
         """
-        user = self.__db.find({"name": name})
-        item = [data for data in user if data]
-        if item:
-            return item
-        return "User not found"
+        try:
+            if param == "_id":
+                prefix = ObjectId(prefix)
+            user = self.__db.find({param: prefix})
+            item = [data for data in user if data]
+            if item:
+                return item
+            return "User not found"
+        except Exception as e:
+            return f"error {e}"
 
     def Query_search(self, parameter: str, prefix: str) -> List:
         """
