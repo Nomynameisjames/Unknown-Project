@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from typing import Union, Dict, List
 from bson import ObjectId
 from pymongo.server_api import ServerApi
 from pymongo import MongoClient
 
-load_dotenv()
+load_dotenv(find_dotenv())
 
 """
     The MongoClient method helps establish a connection to the MongoDB
@@ -65,8 +65,9 @@ class mongo_driver:
         try:
             if param == "_id":
                 prefix = ObjectId(prefix)
-            user = self.__db.find({param: prefix})
+            user =  self.__db.find({param: prefix})
             item = [data for data in user if data]
+            print("\n\n AWAITING \n")
             if item:
                 return item
             return "User not found"
@@ -86,8 +87,11 @@ class mongo_driver:
             Finally, certain advanced query symbols are used to search a wider range of item eg 
             find({"name" : {"$gt" : "s"}}) this returns items where the name is greater than s
         """
-        user = self.__db.find({parameter: {"$regex": prefix, "$options": "im"}})
+        user = self.__db.find({parameter: {"$regex": prefix, "$options": "i"}})
         # the query uses the regex modifier to search items within the parameter that matches the prefix
         # the option modifier is used to tune the search wheree the i value indicates casesensitivity and the m indicates enabling a mutiline search
         item = [data for data in user if data]
         return item
+
+    def Update_profile(self):
+        pass
